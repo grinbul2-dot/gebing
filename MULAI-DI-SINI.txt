@@ -1,0 +1,74 @@
+WORD CRYSTAL QUEST - THINGS AROUND ME
+
+START PLAYING
+1. Unzip the whole folder.
+2. Open index.html in a modern browser.
+3. Choose Start adventure. Type your name and choose a picture.
+4. Keep all files and the assets folder together.
+5. On a laptop, you can play offline. On phones, use the web game if your
+   device cannot open local HTML files. Turn the screen sideways.
+
+CONTROLS
+1 / 2 / 3: set aim or lane; cut a fruit box; answer a test question. P / Esc: pause. M: sound on or off.
+School: A/D move; W / Space / Z jump; S duck.
+Home: WASD aim; Space / X / F shoot.
+Town: A/D change lanes; W / Shift run faster; S slow down.
+Finale: A/D choose; Space / X / F cut. You can swipe or click too.
+
+LIVES AND TIME
+Start an area with 3 lives. Wrong answers, missed moves and time-outs cost
+1 life. Safe jumps and landings on clear ground do not cost a life.
+At 0 lives, it is GAME OVER. Try the area again from mission 1.
+Normal mode: 60 seconds per mission, 45 seconds per test question.
+Easy mode: 90 seconds per mission, 60 seconds per test question.
+The clock stops during pauses and messages or when the game window is hidden.
+A test time-out counts as a wrong answer. Tests do not use game lives.
+
+A FRESH START
+Reset Progress is on the map. Confirm to clear only the current player's
+scores, tests, badges, stars, word cards, styles and saved missions. Their name and picture stay.
+Other players keep their progress. This cannot be undone.
+
+TEST ALL MAPS
+Choose SECRET CODE. Type SURYO AGUNG and press Enter.
+All maps open. Scores and badges must still be earned.
+To turn this off, choose TEST MODE ON > Turn off test mode.
+Reset Progress also turns test mode off.
+
+YOUR FILES
+Panduan-Penggunaan.pdf: the game guide, in English.
+Demonstrasi.mp4: a short demo with scripted inputs on the game engine.
+DOKUMENTASI-DESAIN.md: design notes, sources and asset records.
+FONT-LICENSE.txt: the font licence.
+
+YOUR RESULTS
+Results stay on this browser/device. Teacher results > Download CSV saves
+another copy. Clearing browser data may remove your progress.
+Get 70 or more in all four tests to download a certificate PNG.
+
+YOUR NEW ADVENTURE
+Your move is your answer: jump onto a platform, shoot a word target,
+run into a gate, or cut a fruit box. Choosing an aim does not give an answer.
+After 4 missions, lights come on. After 8, plants grow. After 12, the world
+is full of life. Finish the 3-step Final Challenge to open the area test.
+My Word Book keeps word cards and short examples. Practise wrong answers
+without a clock or lives. Two correct practice answers clear a word.
+Each area has 3 stars: finish the missions; answer 12 different questions correctly
+on your first try, without hints; finish the Final Challenge.
+Open Stars & Style to wear rewards at 3, 6, 9 and 12 stars. Styles change
+only your look. They never change lives, time or test scores.
+Old players keep their tests, badges and certificates. They can play the
+new challenges to earn new stars.
+
+PLAY FEEDBACK
+The map shows your next world and finished missions. A bright outline shows
+your chosen aim or lane. It does not show the correct answer. Watch for
+Great move and combo messages. Turn on Less background movement in Settings
+if you want fewer effects. Sound can be turned off at any time.
+
+MORE QUESTIONS, NEW CUT MOVES
+Each map has 50 questions. A new run picks 12: four at each level.
+The next new run uses different questions. Answers move to new positions.
+Continue a saved run to keep the same questions and answer order.
+In the fourth map, your explorer flies with a sword and cuts a fruit box.
+The answer is checked when the sword hits. One wrong cut costs one life.

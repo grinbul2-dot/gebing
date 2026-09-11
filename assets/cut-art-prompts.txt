@@ -1,0 +1,21 @@
+Robot sheet:
+Use case: stylized-concept.
+Asset type: transparent sprite sheet for a polished children's 3D word adventure game.
+Input image: the provided sprite sheet is a character identity and art style reference. Use ONLY its bottom-left robot as the identity reference, not other objects.
+Primary request: create a NEW clean six-frame sword action sprite sheet of exactly the SAME friendly teal-and-cream explorer robot. Rounded black face visor with cyan happy eyes, cream face rim, teal helmet and ear caps with gold details, compact teal-and-cream body, small brown belt and brown explorer backpack, teal boots and gloves. Every frame carries the SAME clearly visible silver fantasy sword with a gold-and-teal hilt.
+Composition: landscape 1536 x 1024 canvas, exact three columns by two rows of equal 512 x 512 cells, invisible grid. One complete isolated full-body pose per cell, generous transparent gutters around each character AND sword, no overlapping cells, consistent character scale. All poses face right and are readable in a side / three-quarter game view. Left to right top row: 1 ready stance with sword held up, 2 crouching windup with sword pulled back, 3 airborne forward leap with sword overhead. Left to right bottom row: 4 powerful forward sword slash with silver blade clearly crossing in front, 5 follow through with sword outstretched forward, 6 low landing stance holding sword. Keep each entire robot, backpack, feet, and sword inside its own cell. Same design, proportions, materials, lighting, and camera across six frames.
+Style: rounded polished 3D toy-like game art exactly matching the reference robot. Beautiful teal enamel, cream trim, brown leather details and silver blade. Soft studio illumination.
+Background: actual transparent alpha, absolutely no backdrop and no ground plane. No text, labels, grid lines, checkerboard artwork, watermark, scenery, speed lines or extra props.
+
+Fruit sheet:
+Use case: stylized-concept.
+Asset type: transparent game asset sheet.
+Input image: use the provided sprite sheet as polished rounded 3D art style guidance, especially its warm wooden bookshelf and teal-and-cream palette.
+Primary request: create a NEW square transparent 1024 x 1024 asset sheet in an exact invisible two columns by two rows equal grid. Top-left cell: a warm wooden fruit crate filled with glossy red apples and small green leaves. Top-right cell: a matching wooden crate filled with bright oranges and small leaves. Bottom-left cell: a matching wooden crate filled with yellow bananas and green pears. Bottom-right cell: three separate isolated fruit pieces, a red apple, orange, and yellow banana, spaced clearly apart.
+Composition: each complete crate silhouette is fully inside its own 512 x 512 cell, generous transparent padding and clear gutters, matching scale, three-quarter front view. Crates have a wide plain flat wooden front panel, clean and unobstructed, suitable for answer text to be overlaid later. Fruit rises out of the open tops. No text on crates. Bottom-right fruits do not touch each other.
+Style: friendly polished 3D game props, rounded edges, rich warm wood, soft studio highlights, matching the existing sprite art. Complete unclipped silhouettes.
+Background: actual transparent alpha; no backdrop, no ground plane. No text, labels, printed markings, grid lines, checkerboard artwork, watermark, scenery, or extra objects.
+
+
+Black matte edit:
+Use case: precise-object-edit. Replace ALL of the gray-and-white checkerboard background in this exact sprite sheet with pure solid black #000000, RGB (0,0,0). Preserve every foreground character or fruit/crate pixel, all colors, all poses, all silhouettes, positions and dimensions unchanged. Keep the exact existing image canvas dimensions and grid arrangement. This is deliberately an opaque solid black matte for game compositing, NOT transparency: there must be no checkerboard remaining and no gray backdrop, gradients, shadows, glow or ground plane. The entire background between and around every object must be uniform pure black.
