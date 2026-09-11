@@ -162,9 +162,10 @@ const AREA_META=[
   ]
  }
 ];
-const Q=(text,options,why,icon='💬',skill='Meaning')=>({text,options,answer:options[0],why,icon,skill});
+const Q=(text,options,why,icon='💬',skill='Meaning',type='choice')=>({text,options,answer:options[0],why,icon,skill,type});
 const MISSIONS=[[
  Q('Draw a straight line. Which tool do you need?',['Ruler','Eraser','School bag'],'A ruler helps us draw straight lines.','📏','Things we use'),
+ Q('A ruler is only used to rub out pencil marks.',['False','True'],'A ruler draws lines. An eraser rubs out marks.','📏','Things we use','truefalse'),
  Q('You made a mistake with your pencil. What do you need?',['Eraser','Pen','Chair'],'An eraser rubs out pencil marks.','✏️','Things we use'),
  Q('You need to borrow a storybook. Where should you go?',['Library','Canteen','Toilets'],'We borrow books from the library.','📚','Places'),
  Q('It is break time. You want to buy lunch at school.',['Canteen','Library','Science lab'],'The canteen sells food and drinks.','🥪','Places'),
@@ -240,6 +241,8 @@ const TESTS=[[
  Q('Water is on the floor. Which action makes the room safer?',['Mop the floor.','Run on the water.','Cover it with books.'],'Mop the water so people do not fall.','🪣','Use the clues')
 ],[
  Q('Where do you send a letter?',['Post office','Park','Hospital'],'We send letters at a post office.','✉️','Places'),
+ Q('A library is a place where you buy food.',['False','True'],'You read and borrow books at a library.','📚','Places','truefalse'),
+ Q('You use a pencil to write or draw.',['True','False'],'A pencil is a tool for writing and drawing.','✏️','Things we use','truefalse'),
  Q('Who grows vegetables?',['Farmer','Doctor','Teacher'],'A farmer grows food.','🥕','Jobs'),
  Q('Who helps sick people?',['Doctor','Postman','Farmer'],'A doctor helps sick people.','🩺','Jobs'),
  Q('The bank is opposite the park. It is ___.',['across from the park','inside the park','under the park'],'Opposite means across from.','🏦','Where things are'),
