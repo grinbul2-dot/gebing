@@ -30,3 +30,11 @@
   border-radius: 8px;
   font-size: 16px;
 }
+
+
+.skill-list { margin-top: 20px; display: grid; gap: 12px; }
+.skill-row { display: flex; align-items: center; gap: 15px; }
+.skill-label { width: 140px; font-size: 14px; color: #a1c6e1; text-align: right; }
+.skill-bar-wrap { flex: 1; height: 12px; background: #1a334a; border-radius: 6px; overflow: hidden; }
+.skill-bar { height: 100%; background: #69bc92; transition: width 0.5s ease-out; }
+.skill-score { width: 45px; font-size: 14px; font-weight: bold; color: #d4e4f0; }
