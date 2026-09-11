@@ -1,4 +1,4 @@
-# Word Crystal Quest - Things Around Me
+# GEBING - Things Around Me
 
 Game creator: Suryo Agung Nugroho, S.Pd. / SMP Negeri 1 Nglipar.
 Updated: 10 September 2026.
@@ -69,7 +69,7 @@ Demonstrasi.mp4 uses scripted inputs on the same game engine. It is not a record
 
 > Use case: stylized-concept
 
-> Asset type: original illustration for the English learning adventure game Word Crystal Quest, used as both in-game world map and start-screen background.
+> Asset type: original illustration for the English learning adventure game GEBING, used as both in-game world map and start-screen background.
 
 > Primary request: A wide 16:9 lush floating-island world map. Polished colorful 3D clay adventure game illustration with saturated emerald and turquoise grassy islands. Warm coral-roof school campus on the left island, cozy home in the center, little neighborhood buildings on the right island, and a glowing violet crystal mountain in the distance. Curved cream paths and small bridges link the islands. Atmospheric navy and teal sky with soft mist.
 
@@ -81,7 +81,7 @@ Demonstrasi.mp4 uses scripted inputs on the same game engine. It is not a record
 
 > Use case: stylized-concept
 
-> Asset type: production sprite atlas for Word Crystal Quest, an original English learning adventure game.
+> Asset type: production sprite atlas for GEBING, an original English learning adventure game.
 
 > Primary request: Generate ONE 1024x1024 square RGBA PNG sprite atlas with a genuinely transparent background. Exactly 4 columns by 4 rows, 16 equally sized cells, each cell 256x256 pixels. No visible grid lines. Place one isolated object at the exact center of each cell, keeping each object entirely inside the middle 180x180 area of its cell with generous empty transparent gutters, so the atlas can be cut by exact uniform coordinates for drawImage use. Every object uses the same polished original colorful 3D clay miniature style, smooth rounded forms, soft warm upper-left illumination, emerald and turquoise palette with warm coral and violet accents, matching a lush floating-island adventure world.
 
