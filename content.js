@@ -10,7 +10,7 @@ const AREA_META=[
   "badge": "School Master",
   "guide": "Nara",
   "desc": "Explore the school. Find things and rooms from the clues.",
-  "controls": "A D / ← → move • W / Space / Z jump • S duck • You can use the screen buttons too",
+  "controls": "A D / ← → move • W / Space / Z jump • Mobile: Drag left side to move, tap right side to jump",
   "vocab": [
    [
     "ruler",
@@ -92,7 +92,7 @@ const AREA_META=[
   "badge": "Town Explorer",
   "guide": "Sari",
   "desc": "Run through the town. Read each clue and choose the right path.",
-  "controls": "A D / ← → change lanes • W / Shift run faster • S slow down • You can tap a lane too",
+  "controls": "A D / ← → change lanes • W / Shift run faster • Mobile: Tap the screen to switch lanes",
   "vocab": [
    [
     "hospital",
