@@ -18,9 +18,10 @@ function drawCertificate(canvas,player,logos){
  c.textAlign='center';c.fillStyle='#efc886';c.font='bold 48px Quest, Arial';c.fillText('CERTIFICATE OF COMPLETION',800,331);
  c.fillStyle='#d7e7f1';c.font='30px Arial';c.fillText('Things Around Me Explorer',800,389);
  c.fillStyle='#aac4d3';c.font='25px Arial';c.fillText('This certificate is for',800,463);
- c.fillStyle='#a8f2bd';let size=76;c.font=`bold ${size}px Quest, Arial`;while(c.measureText(player.name).width>1320&&size>24){size--;c.font=`bold ${size}px Quest, Arial`;}c.fillText(player.name,800,552);
- c.strokeStyle='#8db4b466';c.lineWidth=1;c.beginPath();c.moveTo(325,584);c.lineTo(1275,584);c.stroke();
- c.fillStyle='#e6f0f6';c.font='30px Arial';c.fillText('for completing all four areas of GEBING.',800,643);
+ c.fillStyle='#a8f2bd';let size=76;c.font=`bold ${size}px Quest, Arial`;while(c.measureText(player.name).width>1320&&size>24){size--;c.font=`bold ${size}px Quest, Arial`;}c.fillText(player.name,800,540);
+ if (player.school) { c.fillStyle='#d7e7f1'; c.font='30px Arial'; c.fillText('from ' + player.school, 800, 582); }
+ c.strokeStyle='#8db4b466';c.lineWidth=1;c.beginPath();c.moveTo(325,605);c.lineTo(1275,605);c.stroke();
+ c.fillStyle='#e6f0f6';c.font='30px Arial';c.fillText('for completing all four areas of GEBING.',800,655);
  c.fillStyle='#efc886';c.font='bold 35px Arial';c.fillText(`${award} · Average best score ${avg}%`,800,720);
  c.fillStyle='#d7e7f1';c.font='27px Arial';c.fillText(new Date(player.completed).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),800,779);
  c.fillStyle='#a7c2d5';c.font='22px Arial';c.fillText('A game award for learning',800,876);c.font='19px Arial';c.fillText('Not an official English qualification',800,911);
