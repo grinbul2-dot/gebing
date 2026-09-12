@@ -36,7 +36,7 @@ function closeModal(){pauseOpen=false; $('#overlay').hidden=true;$('#overlay').i
 function start(){tone();startMusic();if(profile())selectPlayer(db.active);else nameModal();}
 function nameModal(){selectedAvatar='🧑‍🚀';modal(`<div class="eyebrow">NEW PLAYER</div><h2 style="margin-top:12px">What is your name?</h2><p>We will use this name on your results and certificate.</p><label for="player-name">Player name</label><input id="player-name" type="text" maxlength="32" placeholder="Type your name" autocomplete="off"><label>Choose your picture</label><div class="avatars">${['🧑‍🚀','🧑‍🎓','🤖','🐱'].map((a,i)=>button(a,'avatar',i===0?'active':'',`data-value="${a}" aria-label="Avatar ${i+1}"`)).join('')}</div><div class="row">${button('Start exploring →','create','btn primary')}${button('Cancel','close','btn ghost')}</div>`);}
 function createPlayer(){const name=$('#player-name').value.trim();if(!name){toast('Please type your name first.');$('#player-name').focus();return;}const p=newProfile(name,selectedAvatar);db.profiles.push(p);db.active=p.id;save();closeModal();prologStep=0;prolog();}
-function prolog(){setScreen('prolog');const lines=[['Welcome to Word World!',`Hi, ${esc(profile().name)}! I am Kira. Four Word Crystals have lost their light. Read the words and help people to bring it back.`],['Four worlds. One adventure.','Start at school. Visit a home and the town. Then open the crystal gate. Find new clues in each place.'],['Read. Think. Act.','Finish the missions. Get 70 or more in the test to open the next area. Learn from your mistakes. Ready to explore?']];$('#main').innerHTML=`<section class="prolog"><div class="dialogue"><div class="mascot">🦉</div><div><div class="eyebrow">KIRA · ${prologStep+1}/3</div><h2>${lines[prologStep][0]}</h2><p>${lines[prologStep][1]}</p></div>${button(prologStep===2?'Open map →':'Next →','prolog-next','btn primary')}</div></section>`;}
+function prolog(){setScreen('prolog');const lines=[['Welcome to Nglipar!',`Hi, ${esc(profile().name)}! I am Kirana. We are looking for the Lost Word Crystals of Nglipar. Can you help us?`,'Kirana','👩🏽'],['Four Worlds. One Adventure.','We must visit the School, the House, and the Town before opening the Crystal Gate. Each place has clues!','Siti','🧕🏽'],['Read. Think. Act.','Read the clues carefully and choose the right answer. Do not give up! Let us start our adventure now!','Retno','👧🏽']];$('#main').innerHTML=`<section class="prolog"><div class="dialogue"><div class="mascot" style="font-size:76px;line-height:1;">${lines[prologStep][3]}</div><div style="flex:1;"><div class="eyebrow">${lines[prologStep][2]} · ${prologStep+1}/3</div><h2>${lines[prologStep][0]}</h2><p>${lines[prologStep][1]}</p></div>${button(prologStep===2?'Open map →':'Next →','prolog-next','btn primary')}</div></section>`;}
 function world(){if(!profile()){home();return;}closeModal();setScreen('map');const pos=[[8,32],[37,58],[72,37],[56,8]];$('#main').innerHTML=`<section class="world"><div class="world-head"><div class="eyebrow">WORLD MAP</div><h2>Where next, ${esc(profile().name)}.</h2><p>Find all four crystals. Each answer helps you move on.</p></div>${AREA_META.map((a,i)=>`<button class="island ${isOpen(i)?'':'locked'}" style="left:${pos[i][0]}%;top:${pos[i][1]}%" data-action="area" data-i="${i}" aria-label="${a.name}${isOpen(i)?'':' locked'}"><span class="num">${a.icon} &nbsp; AREA 0${i+1}</span><h3>${a.name}</h3><p>${a.place}</p><span class="status">${profile().tests[i]?.best>=70?`✓ Crystal found · ${profile().tests[i].best}%`:isOpen(i)?(profile().done[i]?'Take the area test →':'Explore this area →'):'🔒 Pass the last area test'}</span></button>`).join('')}<div class="map-bottom"><span class="map-tip">✦ Game points: <b>${profile().points}</b> &nbsp; · &nbsp; 🔥 ${profile().streak} days</span><div class="row">${button('🏅 Profile & badges','profile','btn small')}${button('Rank','leaderboard','btn small')}${button('Teacher results','dashboard','btn small')}${button('Change player','players','btn small')}${button('Reset Progress','reset-progress','btn small danger')}</div></div></section>`;}
 function openArea(i){if(!isOpen(i)){toast('Get 70 or more in the last area test to open this map.');return;}area=i;setScreen('intro');const a=AREA_META[i];$('#main').innerHTML=`<section class="page"><div class="page-title"><div><div class="eyebrow">AREA 0${i+1} · ${a.tag}</div><h2 style="margin-top:8px">${a.name}</h2></div>${button('← Map','map','btn small')}</div><div class="intro"><div class="intro-art"><div class="big-icon">${i===2?'<span aria-label="Runner">🏃</span>':`<span class="sprite-ui large" style="background-position:${[0,66.6667,33.3333,66.6667][i]}% ${[66.6667,66.6667,100,100][i]}%"></span>`}</div><h2>${a.guide} is waiting for you.</h2><p>${a.desc}</p></div><div class="card"><h3>12 missions. One crystal.</h3><div class="level-line"><b>Level 1 · Discover</b><br>Use words in everyday life.</div><div class="level-line"><b>Level 2 · Connect</b><br>Read clues about places, times and steps.</div><div class="level-line"><b>Level 3 · Solve</b><br>Use all the clues. Choose the best answer.</div><p style="margin-top:15px;font-size:16px">${a.controls}</p><div class="row">${button(profile().checkpoints[i]?'Continue mission →':'Start mission →','play','btn primary')}${button('Word help','vocab','btn')}${profile().done[i]?button('Area test','test','btn gold'):''}</div></div></div></section>`;}
 function vocabulary(){modal(`<div class="eyebrow">WORD HELP · ${AREA_META[area].place}</div><h2 style="margin-top:12px">Words to help you</h2><div class="vocab">${AREA_META[area].vocab.map(v=>`<div><b>${v[0]}</b><small>${v[1]}</small></div>`).join('')}</div><p style="margin-top:18px;font-size:17px">This: one thing near you. That: one thing far away. These: two or more things near you. Those: two or more things far away.</p><div class="row">${button('Ready to play','close','btn primary')}</div>`);}
@@ -153,11 +153,232 @@ function editorImport() {
 function exportCSV(){const rows=[['Player','Area','Attempt','Date','Test score','Skill','Correct','Total','Game points']];db.profiles.forEach(p=>p.history.forEach((h,i)=>Object.entries(h.skills).forEach(([k,v])=>rows.push([p.name,AREA_META[h.area].place,i+1,h.date,h.score,skillName(k),v.correct,v.total,p.points]))));if(rows.length===1){toast('Finish a test before you download your results.');return;}const safe=v=>{let s=String(v);if(/^[=+@\-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};download(new Blob(['\uFEFF'+rows.map(r=>r.map(safe).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}),'GEBING-Results.csv');}
 function checkpoint(index=game?.index){if(!game)return;profile().checkpoints[area]={index,correct:game.correct,answered:game.answered,assisted:game.assisted,points:game.points,lives:game.lives,over:!!game.over};save();}
 function startPlay(){closeModal();setScreen('play');const cp=profile().checkpoints[area];game=cp?{...cp}:{index:0,correct:0,answered:0,assisted:0,points:0};game.questionIds=validMissionSet(cp?.questionIds,area)?cp.questionIds.slice():cp?MISSION_BANKS[area].slice(0,12).map(q=>q.id):drawMissionSet(area);game.resumeOptions=cp?.options;game.hints=3;game.lives=cp?.lives??3;game.combo=0;game.over=!!cp?.over;if(game.over||game.lives<=0){showGameOver();return;}nextMission();}
-function nextMission(){if(game.index>=MISSIONS[area].length){finishPlay();return;}screen='play';const q=game.final?FINAL_TASKS[area][game.index]:missionQuestion(area,game);game.q=q;game.options=validOptionOrder(game.resumeOptions,q)?game.resumeOptions.slice():shuffled(q.options);game.resumeOptions=null;game.recorded=false;game.helped=false;game.solved=false;game.feedback=false;game.selected=-1;game.hints=3;game.over=false;game.timeLeft=missionSeconds();game.timeLimit=game.timeLeft;header();$('#main').innerHTML=`<div class="hud"><div class="row"><span class="eyebrow">${AREA_META[area].icon} ${AREA_META[area].name}</span><span>LEVEL <b>${Math.floor(game.index/4)+1}/3</b></span><span>MISSION <b>${game.index+1}/12</b></span></div><div class="row"><span>✦ Points <b id="game-points">${game.points}</b></span><span>Practice <b>${game.correct}/${game.answered}</b></span><span id="lives" aria-label="Lives">♥ ${game.lives}</span><span id="mission-clock" class="clock" role="timer" aria-label="Time left">⏱ ${Math.ceil(game.timeLeft)}s</span>${button('Ⅱ Pause','pause','btn small')}</div></div><div class="mission-prompt"><span class="symbol">${q.image?'<img src="'+esc(q.image)+'" style="height:60px;width:auto;border-radius:8px;">':q.icon}</span><div><small>${['DISCOVER · USE WORDS','CONNECT · FIND CLUES','SOLVE · THINK'][Math.floor(game.index/4)]} / ${q.skill.toUpperCase()}</small><p id="mission-text">${esc(q.text)}</p></div>${button('💡 Hint','hint','btn small')}</div><div class="playfield"><canvas id="arena" width="1230" height="333" aria-label="Game area. Use the answers and controls below." role="img"></canvas></div><div class="play-controls"><div class="choice-bar">${game.options.map((v,i)=>button(`<b>${i+1}.</b> ${esc(v)}`,'mission-answer','answer-mini',`data-i="${i}"`)).join('')}</div>${area===0?'<div class="controls"><button class="touch-key" data-key="ArrowLeft" aria-label="Move left">←</button><button class="touch-key" data-key="ArrowRight" aria-label="Move right">→</button><button class="touch-key" data-key="Space" aria-label="Jump">↑</button></div>':area===1?button('Help me shoot','assist-shot','btn gold'):area===2?'<div class="controls"><button class="touch-key" data-key="ArrowLeft" aria-label="Left lane">←</button><button class="touch-key" data-key="ArrowRight" aria-label="Right lane">→</button></div>':`<span class="control-info">Swipe a fruit box, click,<br>or press 1–3.</span>`}</div>`;stopEngine();engine=new GameEngine($('#arena'),area,game.options);engine.start();}
-function selectAnswer(i){if(screen!=='play'||game.feedback||game.solved||!$('#overlay').hidden)return;const q=game.q,ok=game.options[i]===q.answer;game.selected=i;if(!game.recorded){game.recorded=true;game.answered++;if(ok&&!game.helped)game.correct++;if(game.helped)game.assisted++;}if(!ok){game.combo=0;if(loseLife('Wrong answer.'))return;game.feedback=true;modal(`<div class="eyebrow">TRY AGAIN</div><h2 style="margin-top:12px">Read the clue again.</h2><p>${esc(q.why)}</p><p style="font-size:16px;margin-top:13px">Your choice: ${esc(game.options[i])}. Your first answer stays in your results. You can try again.</p><div class="row">${button('Choose again','retry-choice','btn primary')}</div>`);return;}game.solved=true;game.combo=(game.combo||0)+1;sfx(true);document.querySelectorAll('.answer-mini').forEach((b,j)=>{b.disabled=true;b.classList.toggle('selected',j===i);});engine.target=i;engine.ready=true;if(area===3){engine.cut(i);}else toast(area===0?'Correct! Run and jump to the bright platform.':area===1?'Correct! Aim at the bright target. You can also use Help me shoot.':'Correct! Run into the bright lane.');}
-function finishMission(){if(!game||game.feedback||game.over)return;game.feedback=true;const reward=100+engine.bonus+Math.min(game.combo||0,5)*10;game.points+=reward;profile().points+=reward;sfx(true);modal(`<div class="eyebrow">MISSION ${game.index+1} DONE · +${reward} GAME POINTS</div><h2 style="margin-top:13px">${game.q.icon} ${esc(game.q.answer)}</h2><p>${esc(game.q.why)}</p><p style="font-size:16px;margin-top:13px">${game.helped?'You used a hint in this mission.':'Think about how we use these words.'}</p><div class="row">${button(game.index===11?'See practice results →':'Next mission →','next-mission','btn primary')}${button('Back to map','mission-map','btn ghost')}</div>`);checkpoint(game.index+1);}
+function nextMission(){if(game.index>=MISSIONS[area].length){finishPlay();return;}screen='play';const q=game.final?FINAL_TASKS[area][game.index]:missionQuestion(area,game);game.q=q;game.options=validOptionOrder(game.resumeOptions,q)?game.resumeOptions.slice():shuffled(q.options);game.resumeOptions=null;game.recorded=false;game.helped=false;game.solved=false;game.feedback=false;game.selected=-1;game.hints=3;game.over=false;game.timeLeft=missionSeconds();game.timeLimit=game.timeLeft;header();$('#main').innerHTML=`<div class="hud"><div class="row"><span class="eyebrow">${AREA_META[area].icon} ${AREA_META[area].name}</span><span>LEVEL <b>${Math.floor(game.index/4)+1}/3</b></span><span>MISSION <b>${game.index+1}/12</b></span></div><div class="row"><span>✦ Points <b id="game-points">${game.points}</b></span><span>Practice <b>${game.correct}/${game.answered}</b></span><span id="lives" aria-label="Lives">♥ ${game.lives}</span><span id="mission-clock" class="clock" role="timer" aria-label="Time left">⏱ ${Math.ceil(game.timeLeft)}s</span>${button('Ⅱ Pause','pause','btn small')}</div></div><div class="mission-prompt"><span class="symbol">${q.image?'<img src="'+esc(q.image)+'" style="height:60px;width:auto;border-radius:8px;">':q.icon}</span><div><small>${['DISCOVER · USE WORDS','CONNECT · FIND CLUES','SOLVE · THINK'][Math.floor(game.index/4)]} / ${q.skill.toUpperCase()}</small><p id="mission-text">${esc(q.text)}</p></div>${button('💡 Hint','hint','btn small')}</div>${q.type==='matching'||q.type==='sequence'?`<div id="interactive-arena" class="playfield" style="background:#112638;border-radius:0 0 17px 17px;position:relative;height:426px;"></div>`:`<div class="playfield"><canvas id="arena" width="1230" height="333" aria-label="Game area." role="img"></canvas></div><div class="play-controls"><div class="choice-bar">${game.options.map((v,i)=>button(`<b>${i+1}.</b> ${esc(v)}`,'mission-answer','answer-mini',`data-i="${i}"`)).join('')}</div>${area===0?'<div class="controls"><button class="touch-key" data-key="ArrowLeft" aria-label="Move left">←</button><button class="touch-key" data-key="ArrowRight" aria-label="Move right">→</button><button class="touch-key" data-key="Space" aria-label="Jump">↑</button></div>':area===1?button('Help me shoot','assist-shot','btn gold'):area===2?'<div class="controls"><button class="touch-key" data-key="ArrowLeft" aria-label="Left lane">←</button><button class="touch-key" data-key="ArrowRight" aria-label="Right lane">→</button></div>':`<span class="control-info">Swipe a fruit box, click,<br>or press 1–3.</span>`}</div></div>`};stopEngine();if(q.type==='matching'||q.type==='sequence'){startInteractivePuzzle(q.type);}else{engine=new GameEngine($('#arena'),area,game.options);engine.start();}}
+function selectAnswer(i){if(screen!=='play'||game.feedback||game.solved||!$('#overlay').hidden||!engine)return;const q=game.q,ok=game.options[i]===q.answer;game.selected=i;if(!game.recorded){game.recorded=true;game.answered++;if(ok&&!game.helped)game.correct++;if(game.helped)game.assisted++;}if(!ok){game.combo=0;if(loseLife('Wrong answer.'))return;game.feedback=true;modal(`<div class="eyebrow">TRY AGAIN</div><h2 style="margin-top:12px">Read the clue again.</h2><p>${esc(q.why)}</p><p style="font-size:16px;margin-top:13px">Your choice: ${esc(game.options[i])}. Your first answer stays in your results. You can try again.</p><div class="row">${button('Choose again','retry-choice','btn primary')}</div>`);return;}game.solved=true;game.combo=(game.combo||0)+1;sfx(true);document.querySelectorAll('.answer-mini').forEach((b,j)=>{b.disabled=true;b.classList.toggle('selected',j===i);});engine.target=i;engine.ready=true;if(area===3){engine.cut(i);}else toast(area===0?'Correct! Run and jump to the bright platform.':area===1?'Correct! Aim at the bright target. You can also use Help me shoot.':'Correct! Run into the bright lane.');}
+
+let interactiveState = null;
+
+function startInteractivePuzzle(type) {
+    const q = game.q;
+    const container = $('#interactive-arena');
+
+    let html = '<div style="padding:30px;height:100%;display:flex;flex-direction:column;">';
+
+    if (type === 'sequence') {
+        const items = shuffled(q.options.slice());
+        interactiveState = { type, items, original: q.options };
+        html += `
+            <h3 style="color:#b9d6e5;margin-bottom:20px;">Drag the items up or down into the correct order.</h3>
+            <div id="dnd-list" style="flex:1;display:flex;flex-direction:column;gap:10px;">
+                ${items.map((item, i) => `
+                    <div class="dnd-item" data-idx="${i}" style="padding:15px 20px;background:#203b4d;border:2px solid #4a6b81;border-radius:12px;color:white;font-size:18px;cursor:grab;user-select:none;touch-action:none;">${esc(item)}</div>
+                `).join('')}
+            </div>
+        `;
+    } else if (type === 'matching') {
+        // Assume options are formatted as "Left Part -> Right Part"
+        const pairs = q.options.map(o => o.split('->').map(s=>s.trim()));
+        const lefts = shuffled(pairs.map(p => p[0]));
+        const rights = shuffled(pairs.map(p => p[1]));
+
+        interactiveState = { type, lefts, rights, pairs, drops: Array(rights.length).fill(null) };
+
+        html += `
+            <h3 style="color:#b9d6e5;margin-bottom:20px;">Drag the items from the left to match the right.</h3>
+            <div style="display:flex;gap:30px;flex:1;">
+                <div id="dnd-source" style="flex:1;display:flex;flex-direction:column;gap:10px;">
+                    ${lefts.map((l, i) => `
+                        <div class="dnd-item" data-val="${esc(l)}" style="padding:15px;background:#203b4d;border:2px solid #4a6b81;border-radius:12px;color:white;font-size:18px;cursor:grab;touch-action:none;">${esc(l)}</div>
+                    `).join('')}
+                </div>
+                <div id="dnd-targets" style="flex:1;display:flex;flex-direction:column;gap:10px;">
+                    ${rights.map((r, i) => `
+                        <div class="dnd-target" data-idx="${i}" style="padding:15px;background:#152f43;border:2px dashed #4a6b81;border-radius:12px;color:#a1c6e1;font-size:18px;display:flex;justify-content:space-between;">
+                            <span class="slot" style="color:#5f8298;">(Drop here)</span>
+                            <b>${esc(r)}</b>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+
+    html += `<div style="margin-top:20px;text-align:right;">${button('Check Answer','check-puzzle','btn primary')}</div></div>`;
+    container.innerHTML = html;
+
+    bindDnD();
+}
+
+function bindDnD() {
+    let dragged = null;
+    let placeholder = null;
+
+    const items = document.querySelectorAll('.dnd-item:not(.bound)');
+    items.forEach(el => { el.classList.add('bound');
+        el.addEventListener('pointerdown', e => {
+            if (e.button !== 0 && e.pointerType === 'mouse') return;
+            dragged = el;
+            el.setPointerCapture(e.pointerId);
+            el.style.opacity = '0.5';
+
+            if (interactiveState.type === 'sequence') {
+                placeholder = document.createElement('div');
+                placeholder.className = 'dnd-placeholder';
+                placeholder.style.height = el.offsetHeight + 'px';
+                placeholder.style.background = '#152f43';
+                placeholder.style.border = '2px dashed #4a6b81';
+                placeholder.style.borderRadius = '12px';
+            }
+        });
+
+        el.addEventListener('pointermove', e => {
+            if (!dragged || dragged !== el) return;
+
+            if (interactiveState.type === 'sequence') {
+                const list = document.getElementById('dnd-list');
+                const siblings = [...list.querySelectorAll('.dnd-item:not(.dragging)')];
+                let nextSibling = siblings.find(sib => {
+                    const rect = sib.getBoundingClientRect();
+                    return e.clientY <= rect.top + rect.height / 2;
+                });
+
+                if (dragged.parentNode !== list) return;
+
+                if (!placeholder.parentNode) {
+                    list.insertBefore(placeholder, dragged);
+                    dragged.style.position = 'absolute';
+                    dragged.style.zIndex = 100;
+                    list.appendChild(dragged); // Move out of flow visually
+                }
+
+                const rect = document.getElementById('interactive-arena').getBoundingClientRect(); dragged.style.top = (e.clientY - rect.top - dragged.offsetHeight/2) + 'px'; dragged.style.left = (e.clientX - rect.left - dragged.offsetWidth/2) + 'px';
+
+                if (nextSibling !== placeholder) {
+                    list.insertBefore(placeholder, nextSibling);
+                }
+            } else if (interactiveState.type === 'matching') {
+                dragged.style.position = 'absolute';
+                dragged.style.zIndex = 100;
+                const rect = document.getElementById('interactive-arena').getBoundingClientRect(); dragged.style.top = (e.clientY - rect.top - dragged.offsetHeight/2) + 'px'; dragged.style.left = (e.clientX - rect.left - dragged.offsetWidth/2) + 'px';
+            }
+        });
+
+        el.addEventListener('pointerup', e => {
+            if (!dragged) return;
+            dragged.releasePointerCapture(e.pointerId);
+            dragged.style.opacity = '1';
+            dragged.style.position = 'static';
+            dragged.style.zIndex = 'auto';
+
+            if (interactiveState.type === 'sequence') {
+                if (placeholder && placeholder.parentNode) {
+                    placeholder.parentNode.insertBefore(dragged, placeholder);
+                    placeholder.remove();
+                }
+            } else if (interactiveState.type === 'matching') {
+                // Find if dropped over target
+                const targets = document.querySelectorAll('.dnd-target');
+                let dropped = false;
+                targets.forEach((t, i) => {
+                    const r = t.getBoundingClientRect();
+                    if (e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom) {
+                        // Slot it in
+                        const val = dragged.dataset.val;
+
+                        // If replacing existing, put existing back
+                        const existing = interactiveState.drops[i];
+                        if (existing) {
+                            const sourceDiv = document.createElement('div');
+                            sourceDiv.className = 'dnd-item';
+                            sourceDiv.dataset.val = existing;
+                            sourceDiv.style = "padding:15px;background:#203b4d;border:2px solid #4a6b81;border-radius:12px;color:white;font-size:18px;cursor:grab;";
+                            sourceDiv.textContent = existing;
+                            document.getElementById('dnd-source').appendChild(sourceDiv);
+                            bindDnD(); // rebind
+                        }
+
+
+                        interactiveState.drops[i] = val;
+                        t.querySelector('.slot').textContent = val;
+                        t.querySelector('.slot').style.color = '#fff';
+                        t.style.cursor = 'pointer';
+                        t.onclick = function() {
+                            if(interactiveState.drops[i]) {
+                                const sourceDiv = document.createElement('div');
+                                sourceDiv.className = 'dnd-item';
+                                sourceDiv.dataset.val = interactiveState.drops[i];
+                                sourceDiv.style = "padding:15px;background:#203b4d;border:2px solid #4a6b81;border-radius:12px;color:white;font-size:18px;cursor:grab;";
+                                sourceDiv.textContent = interactiveState.drops[i];
+                                document.getElementById('dnd-source').appendChild(sourceDiv);
+                                interactiveState.drops[i] = null;
+                                t.querySelector('.slot').textContent = '(Drop here)';
+                                t.querySelector('.slot').style.color = '#5f8298';
+                                t.style.cursor = 'default';
+                                t.onclick = null;
+                                bindDnD();
+                            }
+                        };
+                        dragged.remove();
+                        dropped = true;
+
+                    }
+                });
+            }
+            dragged = null;
+            placeholder = null;
+        });
+    });
+}
+
+function finishMission(){if(!game||game.feedback||game.over)return;game.feedback=true;const reward=100+(engine?.bonus||0)+Math.min(game.combo||0,5)*10;game.points+=reward;profile().points+=reward;sfx(true);modal(`<div class="eyebrow">MISSION ${game.index+1} DONE · +${reward} GAME POINTS</div><h2 style="margin-top:13px">${game.q.icon} ${esc(game.q.answer)}</h2><p>${esc(game.q.why)}</p><p style="font-size:16px;margin-top:13px">${game.helped?'You used a hint in this mission.':'Think about how we use these words.'}</p><div class="row">${button(game.index===11?'See practice results →':'Next mission →','next-mission','btn primary')}${button('Back to map','mission-map','btn ghost')}</div>`);checkpoint(game.index+1);}
 function advanceMission(goMap=false){closeModal();game.index++;game.recorded=false;game.helped=false;game.failed=false;game.selected=-1;game.options=null;game.timeLeft=null;game.timeLimit=null;checkpoint();if(goMap)world();else nextMission();}
 function finishPlay(){stopEngine();const p=profile();p.done[area]=true;p.checkpoints[area]=null;save();setScreen('practice-result');$('#main').innerHTML=`<section class="page"><div class="page-title"><div><div class="eyebrow">PRACTICE COMPLETE</div><h2 style="margin-top:10px">You are ready for the test.</h2></div><span style="font-size:65px">${AREA_META[area].icon}</span></div><div class="result-top"><div class="result-number">${game.correct}/12</div><div><h2>First answers without hints</h2><p>${game.assisted} missions with hints · ${game.points} game points.<br>The next test gives your learning score. Missed jumps and shots do not change that score.</p></div></div><div class="card"><h3>Area Test · 10 questions</h3><p>Answer on your own before time runs out. Get 7 answers right to find the crystal. You can take the test again without playing all the missions.</p><div class="row" style="margin-top:24px">${button('Start area test →','test','btn primary')}${button('Open word help','vocab','btn')}${button('Back to map','map','btn')}</div></div></section>`;}
+
+function checkPuzzle() {
+    if (game.solved) return;
+    const q = game.q;
+    let correct = false;
+
+    if (interactiveState.type === 'sequence') {
+        const currentOrder = [...document.querySelectorAll('#dnd-list .dnd-item')].map(el => el.textContent.trim());
+        const expectedOrder = interactiveState.original;
+        correct = currentOrder.join('|') === expectedOrder.join('|');
+    } else if (interactiveState.type === 'matching') {
+        const rights = interactiveState.rights;
+        const pairs = interactiveState.pairs;
+
+        // Ensure all slots filled
+        if (interactiveState.drops.includes(null)) {
+            toast('Please match all items first.');
+            return;
+        }
+
+        correct = true;
+        for (let i=0; i<rights.length; i++) {
+            const l = interactiveState.drops[i];
+            const r = rights[i];
+            const valid = pairs.some(p => p[0] === l && p[1] === r);
+            if (!valid) {
+                correct = false;
+                break;
+            }
+        }
+    }
+
+    // Simulate selectAnswer behavior
+    if (!game.recorded){game.recorded=true;game.answered++;if(correct&&!game.helped)game.correct++;if(game.helped)game.assisted++;}
+
+    if (!correct) {
+        game.combo=0;if(loseLife('Wrong answer.'))return;game.feedback=true;
+        modal(`<div class="eyebrow">TRY AGAIN</div><h2 style="margin-top:12px">Read the clue again.</h2><p>${esc(q.why)}</p><div class="row">${button('Choose again','retry-choice','btn primary')}</div>`);
+        return;
+    }
+
+    game.solved=true;game.combo=(game.combo||0)+1;sfx(true);
+    toast('Correct!');
+    setTimeout(finishMission, 1000);
+}
+
 function hint(){if(!game||game.solved)return;if(game.hints<=0){toast('No hints left in this mission.');return;}game.hints--;game.helped=true;modal(`<div class="eyebrow">HINT FROM ${AREA_META[area].guide.toUpperCase()}</div><h2 style="margin-top:12px">Look at the clues.</h2><p>${esc(game.q.why)}</p><p style="font-size:16px;margin-top:15px">We mark answers with hints in your practice results. There are no hints in the area test.</p><div class="row">${button('Back to mission','close','btn primary')}</div>`);}
 function pause(){if(game&&screen==='play'&&!game.feedback&&!game.solved)checkpoint();modal(`<h2>Game paused</h2><p>Take a short break. The clock is stopped.</p><div class="row">${button('▶ Continue','close','btn primary')}${button('Controls','play-help','btn')}${button('Go to map','leave-play','btn ghost')}</div>`);pauseOpen=true;}
 function startTest(){if(!profile()?.done[area]){toast('Finish the 12 missions in this area first.');return;}closeModal();setScreen('test');TESTS[area].forEach((q,i)=>q.id='t'+area+'-'+i); quiz={questions:shuffled(TESTS[area].map(base => (db.customBanks && db.customBanks[area] && db.customBanks[area][base.id]) ? db.customBanks[area][base.id] : base)),index:0,answers:[],locked:false};renderQuiz();}
@@ -202,7 +423,7 @@ class GameEngine{
  drawNinja(){const c=this.ctx;this.text('Choose the right word card. Swipe, click, or press 1–3.',615,29,18,'#d1d3ef','center');for(let i=0;i<this.options.length;i++){const p=this.cardPos(i),active=game.solved&&this.target===i;this.rounded(p.x-166,p.y-78,332,156,21,active?'#47664e':'#2d3559',active?'#b9ffd0':'#9e91d0');this.object(this.options[i],p.x,p.y-45,55);this.wrap(`${i+1}. ${this.options[i]}`,p.x,p.y+1,310,18,active?'#d8ffe7':'#f0eafd');}if(this.trail.length>1){c.beginPath();this.trail.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle='#c5fff1';c.lineWidth=5;c.lineCap='round';c.stroke();}this.text(game.solved?`COMBO ×${game.combo} · CRYSTAL RESTORED`:'Read carefully before you move.',615,320,15,'#c4c0df','center');}
 }
 // Event tunggal menjaga semua tampilan tetap berada pada index.html (SPA).
-document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const a=b.dataset.action,i=Number(b.dataset.i);if(a==='start')start();else if(a==='home')home();else if(a==='secret')secretCode();else if(a==='unlock-maps')unlockMaps();else if(a==='lock-maps')lockMaps();else if(a==='start-fullscreen'){fullscreen();start();}else if(a==='offline'){if(location.protocol==='file:')toast('This game is already offline. Keep all files in the same folder.');else {const a=document.createElement('a');a.href='downloads/GEBING.zip';a.download='GEBING.zip';a.click();}}else if(a==='fullscreen')fullscreen();else if(a==='mute'){db.settings.mute=!db.settings.mute;save();header();}else if(a==='settings')settings();else if(a==='save-settings')saveSettings();else if(a==='close')closeModal();else if(a==='avatar'){selectedAvatar=b.dataset.value;document.querySelectorAll('.avatars button').forEach(x=>x.classList.toggle('active',x===b));}else if(a==='create')createPlayer();else if(a==='prolog-next'){if(++prologStep>=3)world();else prolog();}else if(a==='map'){if(screen==='play')pause();else if(screen==='test')quitTest();else world();}else if(a==='back'){if(profile())world();else home();}else if(a==='area')openArea(i);else if(a==='vocab')vocabulary();else if(a==='play')startPlay();else if(a==='learning'||a==='guide'||a==='credits'){if(screen==='play'||screen==='test'){modal(`<h2>Your game is still open</h2><p>${screen==='play'?'Pause and go to the map to open the guide. Finished missions are saved.':'Finish or leave the test to open the guide.'}</p><div class="row">${button('Continue','close','btn primary')}</div>`);}else ({learning,guide,credits})[a]();}else if(a==='players')players();else if(a==='new-player')nameModal();else if(a==='select-player')selectPlayer(b.dataset.id);else if(a==='profile')showProfile();else if(a==='dashboard')dashboard();else if(a==='leaderboard')leaderboard();else if(a==='csv')exportCSV();else if(a==='history')history(b.dataset.id);else if(a==='mission-answer')selectAnswer(i);else if(a==='retry-choice'){game.feedback=false;closeModal();}else if(a==='hint')hint();else if(a==='pause')pause();else if(a==='play-help'){modal(`<h2>Controls: ${AREA_META[area].name}</h2><p>${AREA_META[area].controls}</p><p style="margin-top:15px">Your move is your answer. Read the clue, then jump, shoot, run or cut. Easy mode is in Settings.</p><div class="row">${button('Continue','close','btn primary')}</div>`);}else if(a==='leave-play'){world();}else if(a==='restart-area')restartArea();else if(a==='reset-progress')confirmReset();else if(a==='confirm-reset')resetProgress();else if(a==='timeout-retry'){closeModal();game.feedback=false;game.timeLeft=missionSeconds();game.timeLimit=game.timeLeft;}else if(a==='assist-shot')engine?.assistShot();else if(a==='next-mission')advanceMission();else if(a==='mission-map')advanceMission(true);else if(a==='test')startTest();else if(a==='test-answer')testAnswer(i);else if(a==='test-next'){closeModal();if(++quiz.index>=10)finishTest();else renderQuiz();}else if(a==='quit-test')quitTest();else if(a==='confirm-quit'){closeModal();world();}else if(a==='next-area')openArea(area+1);else if(a==='certificate')certificate();else if(a==='download-cert')downloadCert();else if(a==='editor-tab'){editorArea=i;teacherEditor();}else if(a==='editor-edit')editorEditModal(b.dataset.id);else if(a==='editor-save')editorSave(b.dataset.id);else if(a==='editor-export')editorExport();else if(a==='editor-import')editorImport();else if(a==='editor-restore'){delete db.customBanks;save();toast('Restored defaults.');teacherEditor();}else if(a==='editor-reset-q'){delete db.customBanks[editorArea][b.dataset.id];save();toast('Question reset.');teacherEditor();}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||b.disabled)return;const a=b.dataset.action,i=Number(b.dataset.i);if(a==='start')start();else if(a==='home')home();else if(a==='secret')secretCode();else if(a==='unlock-maps')unlockMaps();else if(a==='lock-maps')lockMaps();else if(a==='start-fullscreen'){fullscreen();start();}else if(a==='offline'){if(location.protocol==='file:')toast('This game is already offline. Keep all files in the same folder.');else {const a=document.createElement('a');a.href='downloads/GEBING.zip';a.download='GEBING.zip';a.click();}}else if(a==='fullscreen')fullscreen();else if(a==='mute'){db.settings.mute=!db.settings.mute;save();header();}else if(a==='settings')settings();else if(a==='save-settings')saveSettings();else if(a==='close')closeModal();else if(a==='avatar'){selectedAvatar=b.dataset.value;document.querySelectorAll('.avatars button').forEach(x=>x.classList.toggle('active',x===b));}else if(a==='create')createPlayer();else if(a==='prolog-next'){if(++prologStep>=3)world();else prolog();}else if(a==='map'){if(screen==='play')pause();else if(screen==='test')quitTest();else world();}else if(a==='back'){if(profile())world();else home();}else if(a==='area')openArea(i);else if(a==='vocab')vocabulary();else if(a==='play')startPlay();else if(a==='learning'||a==='guide'||a==='credits'){if(screen==='play'||screen==='test'){modal(`<h2>Your game is still open</h2><p>${screen==='play'?'Pause and go to the map to open the guide. Finished missions are saved.':'Finish or leave the test to open the guide.'}</p><div class="row">${button('Continue','close','btn primary')}</div>`);}else ({learning,guide,credits})[a]();}else if(a==='players')players();else if(a==='new-player')nameModal();else if(a==='select-player')selectPlayer(b.dataset.id);else if(a==='profile')showProfile();else if(a==='dashboard')dashboard();else if(a==='leaderboard')leaderboard();else if(a==='csv')exportCSV();else if(a==='history')history(b.dataset.id);else if(a==='mission-answer')selectAnswer(i);else if(a==='retry-choice'){game.feedback=false;closeModal();}else if(a==='hint')hint();else if(a==='pause')pause();else if(a==='play-help'){modal(`<h2>Controls: ${AREA_META[area].name}</h2><p>${AREA_META[area].controls}</p><p style="margin-top:15px">Your move is your answer. Read the clue, then jump, shoot, run or cut. Easy mode is in Settings.</p><div class="row">${button('Continue','close','btn primary')}</div>`);}else if(a==='leave-play'){world();}else if(a==='restart-area')restartArea();else if(a==='reset-progress')confirmReset();else if(a==='confirm-reset')resetProgress();else if(a==='timeout-retry'){closeModal();game.feedback=false;game.timeLeft=missionSeconds();game.timeLimit=game.timeLeft;}else if(a==='assist-shot')engine?.assistShot();else if(a==='next-mission')advanceMission();else if(a==='mission-map')advanceMission(true);else if(a==='test')startTest();else if(a==='test-answer')testAnswer(i);else if(a==='test-next'){closeModal();if(++quiz.index>=10)finishTest();else renderQuiz();}else if(a==='quit-test')quitTest();else if(a==='confirm-quit'){closeModal();world();}else if(a==='next-area')openArea(area+1);else if(a==='certificate')certificate();else if(a==='download-cert')downloadCert();else if(a==='editor-tab'){editorArea=i;teacherEditor();}else if(a==='editor-edit')editorEditModal(b.dataset.id);else if(a==='editor-save')editorSave(b.dataset.id);else if(a==='editor-export')editorExport();else if(a==='editor-import')editorImport();else if(a==='editor-restore'){delete db.customBanks;save();toast('Restored defaults.');teacherEditor();}else if(a==='check-puzzle')checkPuzzle();else if(a==='editor-reset-q'){delete db.customBanks[editorArea][b.dataset.id];save();toast('Question reset.');teacherEditor();}});
 function quitTest(){modal(`<h2>Leave this test?</h2><p>This test is not saved yet. Your earlier test results will stay.</p><div class="row">${button('Continue test','close','btn primary')}${button('Leave and open map','confirm-quit','btn')}</div>`);}
 const activePointers=new Map();document.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-key]');if(!b)return;e.preventDefault();b.setPointerCapture?.(e.pointerId);activePointers.set(e.pointerId,b.dataset.key);engine?.keyDown(b.dataset.key);});
 function releasePointer(e){const k=activePointers.get(e.pointerId);if(k){activePointers.delete(e.pointerId);if(![...activePointers.values(),...heldKeyboard.values()].includes(k))engine?.keyUp(k);}}document.addEventListener('pointerup',releasePointer);document.addEventListener('pointercancel',releasePointer);

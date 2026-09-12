@@ -168,6 +168,8 @@ const MISSIONS=[[
  Q('A ruler is only used to rub out pencil marks.',['False','True'],'A ruler draws lines. An eraser rubs out marks.','📏','Things we use','truefalse'),
  Q('Look at the crates. Which fruit has the darkest crate?',['Grapes','Apples','Bananas'],'The crate with grapes is drawn in dark gray.','🍇','Things we use','choice','assets/fruit-crates-black.png'),
  Q('You made a mistake with your pencil. What do you need?',['Eraser','Pen','Chair'],'An eraser rubs out pencil marks.','✏️','Things we use'),
+ Q('Match the object to the place.',['Book->Library', 'Stamps->Post Office', 'Fruit->Market'],'Books are borrowed at a library, stamps are sent at a post office, fruit is bought at a market.','📚','Places','matching'),
+ Q('Order the cooking steps.',['Wash hands', 'Set plates', 'Serve food'],'First wash your hands to be clean, then set the plates, then serve the food.','🍽️','Follow steps','sequence'),
  Q('You need to borrow a storybook. Where should you go?',['Library','Canteen','Toilets'],'We borrow books from the library.','📚','Places'),
  Q('It is break time. You want to buy lunch at school.',['Canteen','Library','Science lab'],'The canteen sells food and drinks.','🥪','Places'),
  Q('Monday: 08.00 English, 09.00 Art. It is 09.00. Which lesson starts now?',['Art','English','Science'],'The timetable shows Art at 09.00.','🎨','Times and lessons'),
