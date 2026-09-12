@@ -164,7 +164,6 @@ function editorImport() {
       try {
         const data = JSON.parse(ev.target.result);
         if(data.customBanks || (Array.isArray(data) && data.length === 4)) { db.customBanks = data.customBanks || data; db.customMeta = data.customMeta || null;
-          db.customBanks = data;
           save();
           toast('Question bank imported successfully.');
           teacherEditor();
