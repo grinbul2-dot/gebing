@@ -51,12 +51,18 @@ GameEngine=class extends PhysicsEngine{
   if(index===12&&this.type===0&&this.atlas.complete&&this.atlas.naturalWidth){this.drawRunner(x,y,size);return true;}
   return super.sprite(index,x,y,size);
  }
- drawRunner(x,y,size){const c=this.ctx,d=this.atlas.width/4,srcX=0,srcY=3*d,p=this.player,moving=p.ground&&Math.abs(p.vx)>1,phase=this.runPhase,bob=moving?Math.abs(Math.sin(phase))*2:Math.sin(this.t*2)*.5,crouch=this.keys.has('ArrowDown')&&p.ground,squash=this.landSquash>0?Math.sin(this.landSquash/.2*Math.PI)*.14:0;
+ drawRunner(x,y,size){const c=this.ctx,p=this.player,moving=p.ground&&Math.abs(p.vx)>1,phase=this.runPhase,bob=moving?Math.abs(Math.sin(phase))*2:Math.sin(this.t*2)*.5,crouch=this.keys.has('ArrowDown')&&p.ground,squash=this.landSquash>0?Math.sin(this.landSquash/.2*Math.PI)*.14:0;
   c.save();c.globalAlpha=.28;c.fillStyle='#06121b';c.beginPath();c.ellipse(x,p.y+2,24,5,0,0,Math.PI*2);c.fill();c.restore();
   c.save();c.translate(x,y-bob);c.scale(this.facing*(1+squash),crouch?.76:1-squash);c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):moving?.045*Math.sin(phase):0);
-  // Split the existing raster sprite at the hips. Each leg has its own pivot.
-  for(let side=0;side<2;side++){const swing=moving?Math.sin(phase+(side?Math.PI:0))*.65:!p.ground?(side?.45:-.55):0;c.save();c.translate((side?1:-1)*size*.115,size*.18);c.rotate(swing);c.drawImage(this.atlas,srcX+side*d*.5,srcY+d*.68,d*.5,d*.32,-size*.25,0,size*.5,size*.32);c.restore();}
-  c.drawImage(this.atlas,srcX,srcY,d,d*.7,-size*.5,-size*.5,size,size*.7);c.restore();
+
+  const animPhase=moving?Math.floor(this.runPhase*2)%6:0,frame=animPhase%3;
+  if(this.human.complete&&this.human.naturalWidth){
+    if(animPhase>=3)c.scale(-1,1);
+    c.drawImage(this.human,frame*256,0,256,1024,-size*.45,-size*2.6,size*.9,size*3.6);
+  }else{
+    this.text('🏃',0,size*.4,size*1.2,'white','center');
+  }
+  c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
  drawHouse(){const c=this.ctx;this.text(this.ready?'Pull back and let go · WASD aim · Space / X / F shoot':'Aim at the word that answers the clue.',25,31,17,'#d0ddeb');this.rounded(0,307,1230,26,0,'#67526a');
