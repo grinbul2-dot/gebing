@@ -24,6 +24,6 @@ GameEngine=class extends AnimatedEngine{
  }
  drawHumanRunner(){const c=this.ctx,active=this.ready&&this.speed>.1,phase=active?Math.floor(this.runCycle)%6:0,frame=phase%3,bob=active?Math.sin(this.runCycle*Math.PI)*2:0;
   c.save();c.fillStyle='#071b2566';c.beginPath();c.ellipse(this.carX,320,22,6,0,0,Math.PI*2);c.fill();c.translate(this.carX,267+bob);c.rotate(this.lean*.7);
-  if(this.human.complete&&this.human.naturalWidth){if(phase>=3)c.scale(-1,1);c.drawImage(this.human,frame*256+24,288,216,516,-25,-57,50,119);}else{this.text('🏃',0,32,75,'white','center');}c.restore();
+  if(this.human.complete&&this.human.naturalWidth){if(phase>=3)c.scale(-1,1);c.drawImage(this.human,frame*256,0,256,1024,-25,-150,50,200);}else{this.text('🏃',0,32,75,'white','center');}c.restore();
  }
 };
