@@ -59,18 +59,17 @@ GameEngine=class extends PhysicsEngine{
   const W = size*scale;
   const H = size*scale*(drawHeight/sw);
 
-  // Full-width leg slice duplicated to simulate walking for 3/4 angle sprite
   for(let side=1;side>=0;side--){
-    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.45:!p.ground?(side?.2:-.4):0;
+    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.35:!p.ground?(side?.2:-.3):0;
+    const lift=moving?Math.max(0,Math.cos(phase+(side?Math.PI:0))*.12):0;
     c.save();
-    c.translate(0, H*.13);
+    c.translate(0, H*.12 - H*lift);
     c.rotate(swing);
     if(side===1) c.filter='brightness(0.6)';
-    c.drawImage(this.atlas,srcX,srcY+drawHeight*.55,sw,drawHeight*.45, -W*.5,0, W, H*.45);
+    c.drawImage(this.atlas,srcX,srcY+drawHeight*.52,sw,drawHeight*.48, -W*.5,0, W, H*.48);
     c.restore();
   }
-  // Torso
-  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.6,-W*.5,-H*.5,W,H*.6);
+  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.65,-W*.5,-H*.5,W,H*.65);
   c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
