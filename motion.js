@@ -59,14 +59,17 @@ GameEngine=class extends PhysicsEngine{
   const W = size*scale;
   const H = size*scale*(drawHeight/sw);
 
-  // Adjusted leg pivot and slice mapping to fix the visible gap
-  for(let side=0;side<2;side++){
-    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.65:!p.ground?(side?.45:-.55):0;
-    c.save();c.translate((side?1:-1)*W*.115, H*.10);c.rotate(swing);
-    c.drawImage(this.atlas,srcX+side*sw*.5,srcY+drawHeight*.55,sw*.5,drawHeight*.45, -W*.25,0, W*.5, H*.45);
+  // Full-width leg slice duplicated to simulate walking for 3/4 angle sprite
+  for(let side=1;side>=0;side--){
+    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.45:!p.ground?(side?.2:-.4):0;
+    c.save();
+    c.translate(0, H*.13);
+    c.rotate(swing);
+    if(side===1) c.filter='brightness(0.6)';
+    c.drawImage(this.atlas,srcX,srcY+drawHeight*.55,sw,drawHeight*.45, -W*.5,0, W, H*.45);
     c.restore();
   }
-  // Torso covers more of the top
+  // Torso
   c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.6,-W*.5,-H*.5,W,H*.6);
   c.restore();
  }
