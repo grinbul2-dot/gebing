@@ -56,7 +56,16 @@ GameEngine=class extends PhysicsEngine{
   c.save();c.translate(x,y-bob);c.scale(this.facing*(1+squash),crouch?.76:1-squash);c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):moving?.045*Math.sin(phase):0);
   const scale=1.35;
   const drawHeight = sh + 16;
-  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight,-size*scale/2,-size*scale*(drawHeight/sw)/2 - 10,size*scale,size*scale*(drawHeight/sw));c.restore();
+  const W = size*scale;
+  const H = size*scale*(drawHeight/sw);
+  for(let side=0;side<2;side++){
+    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.4:!p.ground?(side?.3:-.3):0;
+    c.save();c.translate((side?1:-1)*W*.1, H*.1);c.rotate(swing);
+    c.drawImage(this.atlas,srcX+side*sw*.5,srcY+drawHeight*.5,sw*.5,drawHeight*.5, -W*.25,0, W*.5, H*.5);
+    c.restore();
+  }
+  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.6,-W*.5,-H/2 - 10,W,H*.6);
+  c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
  drawHouse(){const c=this.ctx;this.text(this.ready?'Pull back and let go · WASD aim · Space / X / F shoot':'Aim at the word that answers the clue.',25,31,17,'#d0ddeb');this.rounded(0,307,1230,26,0,'#67526a');
