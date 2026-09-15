@@ -53,23 +53,23 @@ GameEngine=class extends PhysicsEngine{
  }
  drawRunner(x,y,size){const c=this.ctx,sw=this.atlas.width/4,sh=this.atlas.height/4,srcX=0,srcY=3*sh-16,p=this.player,moving=p.ground&&Math.abs(p.vx)>1,phase=this.runPhase,bob=moving?Math.abs(Math.sin(phase))*2:Math.sin(this.t*2)*.5,crouch=this.keys.has('ArrowDown')&&p.ground,squash=this.landSquash>0?Math.sin(this.landSquash/.2*Math.PI)*.14:0;
   c.save();c.globalAlpha=.28;c.fillStyle='#06121b';c.beginPath();c.ellipse(x,p.y+2,24,5,0,0,Math.PI*2);c.fill();c.restore();
-  c.save();c.translate(x,y-bob);c.scale(this.facing*(1+squash),crouch?.76:1-squash);c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):moving?.045*Math.sin(phase):0);
+
+  const hop = moving ? Math.abs(Math.sin(phase)) * 6 : 0;
+  c.save();c.translate(x,y-bob-hop);
+
+  const runSquash = moving ? Math.sin(phase*2)*0.03 : 0;
+  c.scale(this.facing*(1+squash - runSquash), (crouch?.76:1-squash) + runSquash);
+
+  const tilt = moving ? 0.08 + Math.sin(phase)*0.08 : 0;
+  c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):tilt);
+
   const scale=1.35;
   const drawHeight = sh + 16;
   const W = size*scale;
   const H = size*scale*(drawHeight/sw);
 
-  for(let side=1;side>=0;side--){
-    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.35:!p.ground?(side?.2:-.3):0;
-    const lift=moving?Math.max(0,Math.cos(phase+(side?Math.PI:0))*.12):0;
-    c.save();
-    c.translate(0, H*.12 - H*lift);
-    c.rotate(swing);
-    if(side===1) c.filter='brightness(0.6)';
-    c.drawImage(this.atlas,srcX,srcY+drawHeight*.52,sw,drawHeight*.48, -W*.5,0, W, H*.48);
-    c.restore();
-  }
-  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.65,-W*.5,-H*.5,W,H*.65);
+  // Draw the entire character frame, no leg splitting
+  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight,-W*.5,-H*.85,W,H);
   c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
