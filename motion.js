@@ -63,13 +63,13 @@ GameEngine=class extends PhysicsEngine{
   const tilt = moving ? 0.08 + Math.sin(phase)*0.08 : 0;
   c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):tilt);
 
-  const scale=2.1;
+  const scale=2.8;
   const drawHeight = sh + 16;
   const W = size*scale;
   const H = size*scale*(drawHeight/sw);
 
-  // Draw the entire character frame, anchored to the ground
-  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight,-W*.5,30-H,W,H);
+  // Anchor firmly to the ground by translating the bottom down to y + 60
+  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight,-W*.5, 55-H,W,H);
   c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}

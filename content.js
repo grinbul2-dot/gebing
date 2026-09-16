@@ -10,7 +10,7 @@ const AREA_META=[
   "badge": "School Master",
   "guide": "Nara",
   "desc": "Explore the school. Find things and rooms from the clues.",
-  "controls": "A D / ← → move • W / Space / Z jump • Mobile: Drag left side to move, tap right side to jump",
+  "controls": "A D / ← → move • W / Space / Z jump • S duck • You can use the screen buttons too",
   "vocab": [
    [
     "ruler",
@@ -92,7 +92,7 @@ const AREA_META=[
   "badge": "Town Explorer",
   "guide": "Sari",
   "desc": "Run through the town. Read each clue and choose the right path.",
-  "controls": "A D / ← → change lanes • W / Shift run faster • Mobile: Tap the screen to switch lanes",
+  "controls": "A D / ← → change lanes • W / Shift run faster • S slow down • You can tap a lane too",
   "vocab": [
    [
     "hospital",
@@ -162,14 +162,11 @@ const AREA_META=[
   ]
  }
 ];
-const Q=(text,options,why,icon='💬',skill='Meaning',type='choice',image=null)=>({text,options,answer:options[0],why,icon,skill,type,image});
+const Q=(text,options,why,icon='💬',skill='Meaning',type='choice')=>({text,options,answer:options[0],why,icon,skill,type});
 const MISSIONS=[[
  Q('Draw a straight line. Which tool do you need?',['Ruler','Eraser','School bag'],'A ruler helps us draw straight lines.','📏','Things we use'),
  Q('A ruler is only used to rub out pencil marks.',['False','True'],'A ruler draws lines. An eraser rubs out marks.','📏','Things we use','truefalse'),
- Q('Look at the crates. Which fruit has the darkest crate?',['Grapes','Apples','Bananas'],'The crate with grapes is drawn in dark gray.','🍇','Things we use','choice','assets/fruit-crates-black.png'),
  Q('You made a mistake with your pencil. What do you need?',['Eraser','Pen','Chair'],'An eraser rubs out pencil marks.','✏️','Things we use'),
- Q('Match the object to the place.',['Book->Library', 'Stamps->Post Office', 'Fruit->Market'],'Books are borrowed at a library, stamps are sent at a post office, fruit is bought at a market.','📚','Places','matching'),
- Q('Order the cooking steps.',['Wash hands', 'Set plates', 'Serve food'],'First wash your hands to be clean, then set the plates, then serve the food.','🍽️','Follow steps','sequence'),
  Q('You need to borrow a storybook. Where should you go?',['Library','Canteen','Toilets'],'We borrow books from the library.','📚','Places'),
  Q('It is break time. You want to buy lunch at school.',['Canteen','Library','Science lab'],'The canteen sells food and drinks.','🥪','Places'),
  Q('Monday: 08.00 English, 09.00 Art. It is 09.00. Which lesson starts now?',['Art','English','Science'],'The timetable shows Art at 09.00.','🎨','Times and lessons'),
@@ -205,7 +202,6 @@ const MISSIONS=[[
  Q('A visitor in Nglipar needs fruit and a place to read. Choose two stops.',['Market and library','Hospital and bank','Station and police station'],'Buy fruit at the market. Read books at the library.','🍉','Use the clues'),
  Q('Your friend lost a bag in town. Who can help?',['Police officer','Farmer','Cook'],'Tell a police officer about the lost thing.','🎒','Jobs'),
  Q('The library closes at 15.00. It is 14.30. The park closes at 18.00. Which should you visit first?',['Library','Park','Either at 17.00'],'The library closes first. Visit it first.','🕒','Use the clues'),
- Q('Look at the character. What is he holding in his hand?',['A sword','A flower','A shield'],'He is holding a sword.','⚔️','Use the clues','choice','assets/robot-sword-black.png'),
  Q('You want exercise in fresh air. Choose the best plan.',['Walk in the park.','Sit inside the bank.','Wait at the post office.'],'Walking in the park matches both exercise and fresh air.','🌳','Use the clues')
 ],[
  Q('Art starts soon. Collect the best pair for drawing.',['Sketchbook + pencils','Plate + spoon','Towel + soap'],'Drawing uses a sketchbook and pencils.','🎨','Things we use'),

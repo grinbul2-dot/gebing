@@ -185,5 +185,5 @@ function drawMissionSet(a,p=profile()){
  for(let level=0;level<3;level++)ids.push(...shuffled(MISSION_BANKS[a].filter(q=>q.level===level&&!last.has(q.id))).slice(0,4).map(q=>q.id));
  p.lastMissionPacks[a]=ids.slice();return ids;
 }
-function missionQuestion(a,run){const base=MISSION_BANKS[a].find(q=>q.id===run.questionIds?.[run.index])||MISSION_BANKS[a][run.index]; return (window.db && db.customBanks && db.customBanks[a] && db.customBanks[a][base.id]) ? db.customBanks[a][base.id] : base;}
+function missionQuestion(a,run){return MISSION_BANKS[a].find(q=>q.id===run.questionIds?.[run.index])||MISSION_BANKS[a][run.index];}
 function validOptionOrder(order,q){return Array.isArray(order)&&order.length===3&&new Set(order).size===3&&order.every(v=>q.options.includes(v));}
