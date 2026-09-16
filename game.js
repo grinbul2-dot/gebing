@@ -85,7 +85,7 @@ class GameEngine{
  keyDown(key){if(this.paused)return;this.keys.add(key);if(this.type===0&&(key==='Space'||key==='ArrowUp')&&this.player.ground){this.player.vy=-420;this.player.ground=false;tone(440,.1);}if(this.type===2){if(key==='ArrowLeft')this.lane=Math.max(0,this.lane-1);if(key==='ArrowRight')this.lane=Math.min(this.options.length-1,this.lane+1);}}
  keyUp(key){this.keys.delete(key);}
  assistShot(){if(this.type!==1||!this.ready){toast('Read the clue. Aim at your answer.');return;}if(this.ball.flying)return;const target=this.targetPosition(this.aimTarget??1),t=1.75;this.ball={x:100,y:256,vx:(target.x-100)/t,vy:(target.y-256-250*t*t)/t,flying:true};tone(330,.15);}
- targetPosition(i){const w=255; const startX=600+(3-this.options.length)*(w/2); return{x:startX+i*w,y:140-(game.index%3)*12};}
+ targetPosition(i){if(this.type===1){const cx=350+(i+1)*(820/(this.options.length+1));const cy=110+Math.sin(this.t*1.5+i*3)*45;const hoverX=Math.cos(this.t*1.2+i*2)*60;return {x:cx+hoverX, y:cy};}const w=255; const startX=600+(3-this.options.length)*(w/2); return{x:startX+i*w,y:140-(game.index%3)*12};}
  cardPos(i){const gap=1230/this.options.length; return{x:gap*i+gap/2,y:167+(db.settings.reduced?0:Math.sin(this.t*(db.settings.relaxed?.65:1.15)+i*2)*45)};}
  miss(){if((this.type===0&&this.cooldown>0)||game?.over)return;this.cooldown=1.6;loseLife('Missed move.');}
 

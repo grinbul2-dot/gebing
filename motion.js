@@ -73,16 +73,44 @@ GameEngine=class extends PhysicsEngine{
   c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
- drawHouse(){const c=this.ctx;this.text(this.ready?'Pull back and let go · WASD aim · Space / X / F shoot':'Aim at the word that answers the clue.',25,31,17,'#d0ddeb');this.rounded(0,307,1230,26,0,'#67526a');
-  for(let i=0;i<this.options.length;i++){const p=this.targetPosition(i),active=game.solved&&this.target===i;if(this.hitTargets.has(i))continue;for(let n=0;n<3;n++)this.rounded(p.x-62+n*43,258,39,48,4,'#86667b','#c396a0');this.rounded(p.x-69,214,138,38,6,'#8c737c','#b79da4');this.rounded(p.x-111,p.y-39,222,86,12,active?'#6c542f':'#192d43',active?'#ffdb94':'#7691a4');this.object(this.options[i],p.x,p.y-17,39);this.wrap(`${i+1}. ${this.options[i]}`,p.x,p.y+17,204,16,active?'#ffebbd':'#e2eef4');}
-  const pouch=this.drag||{x:100+Math.sin(this.recoil*60)*this.recoil*35,y:256};
-  c.lineCap='round';c.strokeStyle='#b78855';c.lineWidth=13;c.beginPath();c.moveTo(100,305);c.lineTo(100,273);c.lineTo(78,233);c.moveTo(100,273);c.lineTo(126,233);c.stroke();
-  c.strokeStyle='#5b3430';c.lineWidth=6;for(const x of[78,126]){c.beginPath();c.moveTo(x,233);c.lineTo(pouch.x,pouch.y);c.stroke();}
-  if(this.drag){const vx=(100-pouch.x)*10.5,vy=(256-pouch.y)*10.5;for(let t=.08;t<1.9;t+=.09){const x=pouch.x+vx*t,y=pouch.y+vy*t+250*t*t;if(y>306||x<0||x>1230)break;c.globalAlpha=Math.max(.12,.75-t*.32);c.fillStyle='#ffe0a4';c.beginPath();c.arc(x,y,3,0,Math.PI*2);c.fill();}c.globalAlpha=1;this.text(`Power ${Math.round(Math.min(100,Math.hypot(100-pouch.x,256-pouch.y)))}%`,190,291,16,'#ffdc9f');}
-  this.shotTrail.forEach(p=>{c.globalAlpha=p.life*.8;c.fillStyle='#acffd0';c.beginPath();c.arc(p.x,p.y,9*p.life/.25,0,Math.PI*2);c.fill();});c.globalAlpha=1;
-  if(!this.pendingFinish){const b=this.ball.flying?this.ball:pouch;c.save();c.translate(b.x,b.y);c.rotate(this.ball.flying?this.ballSpin:0);const g=c.createRadialGradient(-6,-6,1,0,0,19);g.addColorStop(0,'#f1ffcf');g.addColorStop(.4,'#a6f1ba');g.addColorStop(1,'#367a66');c.fillStyle=g;c.beginPath();c.arc(0,0,18,0,Math.PI*2);c.fill();this.text('Aa',0,6,16,'#173e31','center');c.restore();}
-  this.debris.forEach(p=>{c.save();c.translate(p.x,p.y);c.rotate(p.angle);c.globalAlpha=Math.min(1,p.life);this.rounded(-p.w/2,-p.h/2,p.w,p.h,4,'#bc9096','#ead0ae');c.restore();});
- }
+ drawHouse(){const c=this.ctx;this.text(this.ready?'Pull the ball back and down. Let go to shoot.':'Read the clue. Choose an answer before you aim.',25,31,17,'#d0ddeb');this.rounded(0,307,1230,26,0,'#67526a');
+  for(let i=0;i<this.options.length;i++){
+    const p=this.targetPosition(i);
+    const active=game.solved&&this.target===i;
+    if(this.hitTargets.has(i))continue;
+
+    c.beginPath();
+    c.moveTo(p.x, p.y + 40);
+    c.lineTo(p.x + Math.sin(this.t * 3 + i) * 10, p.y + 120);
+    c.strokeStyle = '#8a9b9a';
+    c.lineWidth = 2;
+    c.stroke();
+
+    const bounce = Math.sin(this.t * 2.5 + i * 2) * 5;
+    const by = p.y + bounce;
+
+    c.beginPath();
+    c.ellipse(p.x, by - 15, 85, 65, 0, 0, Math.PI*2);
+    c.fillStyle = active ? '#2b624c' : ['#8c4a4a', '#3f5d7d', '#7d683f', '#4f7d3f'][i % 4];
+    c.fill();
+    c.lineWidth = 3;
+    c.strokeStyle = active ? '#baffd0' : '#b7c7d4';
+    c.stroke();
+
+    c.beginPath();
+    c.moveTo(p.x - 8, by + 50);
+    c.lineTo(p.x + 8, by + 50);
+    c.lineTo(p.x, by + 40);
+    c.fill();
+
+    c.beginPath();
+    c.ellipse(p.x - 45, by - 40, 15, 8, -Math.PI/6, 0, Math.PI*2);
+    c.fillStyle = '#ffffff44';
+    c.fill();
+
+    this.wrap(`${i+1}. ${this.options[i]}`,p.x,by-5,150,18,'#fff');
+  }
+  const b=this.ball;this.rounded(88,258,26,49,6,'#a4bdc5');if(this.drag){c.beginPath();c.moveTo(100,256);c.lineTo(this.drag.x,this.drag.y);c.strokeStyle='#f7d899';c.lineWidth=5;c.stroke();const vx=(100-this.drag.x)*7,vy=(256-this.drag.y)*7;for(let t=.1;t<1.8;t+=.1){c.fillStyle='#ffd8999c';c.beginPath();c.arc(100+vx*t,256+vy*t+250*t*t,3,0,Math.PI*2);c.fill();}}const bx=this.drag?.x??b.x,by=this.drag?.y??b.y;c.beginPath();c.arc(bx,by,18,0,Math.PI*2);c.fillStyle='#b7f7ca';c.fill();this.text('Aa',bx,by+6,16,'#163e37','center');}
  drawRace(){const c=this.ctx,top=45,bottom=333,road=(y)=>135+(y-top)/(bottom-top)*480;
   c.fillStyle='#173c3d';c.fillRect(0,0,1230,333);c.fillStyle='#304758';c.beginPath();c.moveTo(480,top);c.lineTo(750,top);c.lineTo(1230,bottom);c.lineTo(0,bottom);c.closePath();c.fill();
   for(let i=0;i<12;i++){const z=((i/12+this.roadTravel*.0015)%1),y=top+z*z*(bottom-top),half=road(y);for(const side of[-1,1]){const x=615+side*half;c.strokeStyle=i%2?'#d8e2b7':'#69bc92';c.lineWidth=2+z*6;c.beginPath();c.moveTo(x,y);c.lineTo(x+side*(8+z*10),y+5+z*8);c.stroke();}const lanes=this.options.length; for(let n=1;n<lanes;n++){const divX=615-half+(n/lanes)*half*2;const laneOff=(n/lanes)*2-1; c.strokeStyle='#d5e4dc';c.lineWidth=1+z*3;c.beginPath();c.moveTo(divX,y);c.lineTo(divX+laneOff*z*5,y+4+z*9);c.stroke();}}
