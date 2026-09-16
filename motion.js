@@ -53,23 +53,23 @@ GameEngine=class extends PhysicsEngine{
  }
  drawRunner(x,y,size){const c=this.ctx,sw=this.atlas.width/4,sh=this.atlas.height/4,srcX=0,srcY=3*sh-16,p=this.player,moving=p.ground&&Math.abs(p.vx)>1,phase=this.runPhase,bob=moving?Math.abs(Math.sin(phase))*2:Math.sin(this.t*2)*.5,crouch=this.keys.has('ArrowDown')&&p.ground,squash=this.landSquash>0?Math.sin(this.landSquash/.2*Math.PI)*.14:0;
   c.save();c.globalAlpha=.28;c.fillStyle='#06121b';c.beginPath();c.ellipse(x,p.y+2,24,5,0,0,Math.PI*2);c.fill();c.restore();
-
-  const hop = moving ? Math.abs(Math.sin(phase)) * 6 : 0;
-  c.save();c.translate(x,y-bob-hop);
-
-  const runSquash = moving ? Math.sin(phase*2)*0.03 : 0;
-  c.scale(this.facing*(1+squash - runSquash), (crouch?.76:1-squash) + runSquash);
-
-  const tilt = moving ? 0.08 + Math.sin(phase)*0.08 : 0;
-  c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):tilt);
-
-  const scale=2.8;
+  c.save();c.translate(x,y-bob);c.scale(this.facing*(1+squash),crouch?.76:1-squash);c.rotate(!p.ground?Math.max(-.16,Math.min(.16,p.vy*.0003)):moving?.045*Math.sin(phase):0);
+  const scale=1.35;
   const drawHeight = sh + 16;
   const W = size*scale;
   const H = size*scale*(drawHeight/sw);
 
-  // Anchor firmly to the ground by translating the bottom down to y + 60
-  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight,-W*.5, 55-H,W,H);
+  for(let side=1;side>=0;side--){
+    const swing=moving?Math.sin(phase+(side?Math.PI:0))*.35:!p.ground?(side?.2:-.3):0;
+    const lift=moving?Math.max(0,Math.cos(phase+(side?Math.PI:0))*.12):0;
+    c.save();
+    c.translate(0, H*.12 - H*lift);
+    c.rotate(swing);
+    if(side===1) c.filter='brightness(0.6)';
+    c.drawImage(this.atlas,srcX,srcY+drawHeight*.52,sw,drawHeight*.48, -W*.5,0, W, H*.48);
+    c.restore();
+  }
+  c.drawImage(this.atlas,srcX,srcY,sw,drawHeight*.65,-W*.5,-H*.5,W,H*.65);
   c.restore();
  }
  drawSchool(){super.drawSchool();this.text('A D / ← → move · W / Space jump · S duck',28,326,12,'#e9f6ff');}
@@ -78,39 +78,77 @@ GameEngine=class extends PhysicsEngine{
     const p=this.targetPosition(i);
     const active=game.solved&&this.target===i;
     if(this.hitTargets.has(i))continue;
-
     c.beginPath();
-    c.moveTo(p.x, p.y + 40);
-    c.lineTo(p.x + Math.sin(this.t * 3 + i) * 10, p.y + 120);
+    c.moveTo(p.x, p.y + 35);
+    c.lineTo(p.x + Math.sin(this.t * 3 + i) * 10, p.y + 110);
     c.strokeStyle = '#8a9b9a';
     c.lineWidth = 2;
     c.stroke();
-
     const bounce = Math.sin(this.t * 2.5 + i * 2) * 5;
     const by = p.y + bounce;
-
     c.beginPath();
-    c.ellipse(p.x, by - 15, 85, 65, 0, 0, Math.PI*2);
+    c.ellipse(p.x, by - 10, 65, 50, 0, 0, Math.PI*2);
     c.fillStyle = active ? '#2b624c' : ['#8c4a4a', '#3f5d7d', '#7d683f', '#4f7d3f'][i % 4];
     c.fill();
     c.lineWidth = 3;
     c.strokeStyle = active ? '#baffd0' : '#b7c7d4';
     c.stroke();
-
     c.beginPath();
-    c.moveTo(p.x - 8, by + 50);
-    c.lineTo(p.x + 8, by + 50);
-    c.lineTo(p.x, by + 40);
+    c.moveTo(p.x - 6, by + 40);
+    c.lineTo(p.x + 6, by + 40);
+    c.lineTo(p.x, by + 30);
     c.fill();
-
     c.beginPath();
-    c.ellipse(p.x - 45, by - 40, 15, 8, -Math.PI/6, 0, Math.PI*2);
+    c.ellipse(p.x - 30, by - 30, 10, 5, -Math.PI/6, 0, Math.PI*2);
     c.fillStyle = '#ffffff44';
     c.fill();
-
-    this.wrap(`${i+1}. ${this.options[i]}`,p.x,by-5,150,18,'#fff');
+    this.wrap(`${i+1}. ${this.options[i]}`,p.x,by,110,16,'#fff');
   }
-  const b=this.ball;this.rounded(88,258,26,49,6,'#a4bdc5');if(this.drag){c.beginPath();c.moveTo(100,256);c.lineTo(this.drag.x,this.drag.y);c.strokeStyle='#f7d899';c.lineWidth=5;c.stroke();const vx=(100-this.drag.x)*7,vy=(256-this.drag.y)*7;for(let t=.1;t<1.8;t+=.1){c.fillStyle='#ffd8999c';c.beginPath();c.arc(100+vx*t,256+vy*t+250*t*t,3,0,Math.PI*2);c.fill();}}const bx=this.drag?.x??b.x,by=this.drag?.y??b.y;c.beginPath();c.arc(bx,by,18,0,Math.PI*2);c.fillStyle='#b7f7ca';c.fill();this.text('Aa',bx,by+6,16,'#163e37','center');}
+  const b=this.ball;this.rounded(88,258,26,49,6,'#a4bdc5');if(this.drag){c.beginPath();c.moveTo(100,256);c.lineTo(this.drag.x,this.drag.y);c.strokeStyle='#f7d899';c.lineWidth=5;c.stroke();const vx=(100-this.drag.x)*7,vy=(256-this.drag.y)*7;for(let t=.1;t<1.8;t+=.1){c.fillStyle='#ffd8999c';c.beginPath();c.arc(100+vx*t,256+vy*t+250*t*t,3,0,Math.PI*2);c.fill();}}const bx=this.drag?.x??b.x,by=this.drag?.y??b.y;c.beginPath();c.arc(bx,by,18,0,Math.PI*2);c.fillStyle='#b7f7ca';c.fill();this.text('Aa',bx,by+6,16,'#163e37','center');
+ }
+ drawRace(){const c=this.ctx;
+  this.text(this.ready?'Move to catch the correct answer!':'Read the clue. Catch the right answer falling.',25,31,17,'#d0ddeb');
+  for(let i=0;i<this.options.length;i++){
+    const active=game.solved&&this.target===i,y=this.gateY;
+    const w=1230/this.options.length;
+    this.rounded(i*w+29,y,w-58,89,12,active?'#306350':'#0a2536',active?'#b2f3bf':'#5b8596');
+    this.wrap(`${i+1}. ${this.options[i]}`,i*w+w/2,y+37,320,19);
+  }
+  if(!this.sprite(13,this.carX,277,96))this.text('🧺',this.carX,302,63,'white','center');
+  if(!this.ready){
+    this.rounded(368,158,494,51,12,'#0b1d30ed','#668b9b');
+    this.text('Choose an answer to start playing.',615,190,21,'#def2ff','center');
+  }
+ }
+ drawNinja(){const c=this.ctx;
+  this.text('Press Space or Tap to fly! Hit the correct answer coin.',25,29,18,'#d1d3ef');
+  c.save();
+  c.translate(200, this.player.y);
+  c.rotate(Math.min(0.5, Math.max(-0.5, this.player.vy * 0.002)));
+  if(!this.sprite(15, 0, 0, 60)) this.text('🦅', 0, 15, 45, 'white', 'center');
+  c.restore();
+  if(!this.ready) {
+    this.text('TAP TO START', 200, this.player.y - 50, 20, '#b9ffd0', 'center');
+  }
+  for(let i=0;i<this.options.length;i++){
+    const active=game.solved&&this.target===i;
+    const cx = this.gateX;
+    const cy = 60 + i*(260/(this.options.length));
+    this.rounded(cx-100, cy-30, 200, 60, 12, active?'#47664e':'#2d3559', active?'#b9ffd0':'#9e91d0');
+    this.wrap(`${i+1}. ${this.options[i]}`, cx, cy+6, 180, 16, active?'#d8ffe7':'#f0eafd');
+  }
+  if(game.solved) this.text(`COMBO ×${game.combo} · CORRECT!`, 615, 320, 15, '#c4c0df', 'center');
+ }
+ drawSling(){
+  const c=this.ctx;
+  const pouch = this.drag || {x: 100, y: 256};
+  c.lineCap='round';c.strokeStyle='#b78855';c.lineWidth=13;c.beginPath();c.moveTo(100,305);c.lineTo(100,273);c.lineTo(78,233);c.moveTo(100,273);c.lineTo(126,233);c.stroke();
+  c.strokeStyle='#5b3430';c.lineWidth=6;for(const x of[78,126]){c.beginPath();c.moveTo(x,233);c.lineTo(pouch.x,pouch.y);c.stroke();}
+  if(this.drag){const vx=(100-pouch.x)*10.5,vy=(256-pouch.y)*10.5;for(let t=.08;t<1.9;t+=.09){const x=pouch.x+vx*t,y=pouch.y+vy*t+250*t*t;if(y>306||x<0||x>1230)break;c.globalAlpha=Math.max(.12,.75-t*.32);c.fillStyle='#ffe0a4';c.beginPath();c.arc(x,y,3,0,Math.PI*2);c.fill();}c.globalAlpha=1;this.text(`Power ${Math.round(Math.min(100,Math.hypot(100-pouch.x,256-pouch.y)))}%`,190,291,16,'#ffdc9f');}
+  this.shotTrail.forEach(p=>{c.globalAlpha=p.life*.8;c.fillStyle='#acffd0';c.beginPath();c.arc(p.x,p.y,9*p.life/.25,0,Math.PI*2);c.fill();});c.globalAlpha=1;
+  if(!this.pendingFinish){const b=this.ball.flying?this.ball:pouch;c.save();c.translate(b.x,b.y);c.rotate(this.ball.flying?this.ballSpin:0);const g=c.createRadialGradient(-6,-6,1,0,0,19);g.addColorStop(0,'#f1ffcf');g.addColorStop(.4,'#a6f1ba');g.addColorStop(1,'#367a66');c.fillStyle=g;c.beginPath();c.arc(0,0,18,0,Math.PI*2);c.fill();this.text('Aa',0,6,16,'#173e31','center');c.restore();}
+  this.debris.forEach(p=>{c.save();c.translate(p.x,p.y);c.rotate(p.angle);c.globalAlpha=Math.min(1,p.life);this.rounded(-p.w/2,-p.h/2,p.w,p.h,4,'#bc9096','#ead0ae');c.restore();});
+ }
  drawRace(){const c=this.ctx,top=45,bottom=333,road=(y)=>135+(y-top)/(bottom-top)*480;
   c.fillStyle='#173c3d';c.fillRect(0,0,1230,333);c.fillStyle='#304758';c.beginPath();c.moveTo(480,top);c.lineTo(750,top);c.lineTo(1230,bottom);c.lineTo(0,bottom);c.closePath();c.fill();
   for(let i=0;i<12;i++){const z=((i/12+this.roadTravel*.0015)%1),y=top+z*z*(bottom-top),half=road(y);for(const side of[-1,1]){const x=615+side*half;c.strokeStyle=i%2?'#d8e2b7':'#69bc92';c.lineWidth=2+z*6;c.beginPath();c.moveTo(x,y);c.lineTo(x+side*(8+z*10),y+5+z*8);c.stroke();}const lanes=this.options.length; for(let n=1;n<lanes;n++){const divX=615-half+(n/lanes)*half*2;const laneOff=(n/lanes)*2-1; c.strokeStyle='#d5e4dc';c.lineWidth=1+z*3;c.beginPath();c.moveTo(divX,y);c.lineTo(divX+laneOff*z*5,y+4+z*9);c.stroke();}}
@@ -126,5 +164,5 @@ GameEngine=class extends PhysicsEngine{
   for(const p of this.cutPieces){c.save();c.translate(p.x,p.y);c.rotate(p.angle);c.globalAlpha=Math.max(0,1-p.age*.85);const poly=this.halfPolygon(p.normal,p.sign);c.beginPath();poly.forEach((v,i)=>i?c.lineTo(v.x,v.y):c.moveTo(v.x,v.y));c.closePath();c.clip();this.cardFace(p.index,0,0,true);c.strokeStyle='#edffeb';c.lineWidth=3;c.beginPath();c.moveTo(-p.normal.y*240,p.normal.x*240);c.lineTo(p.normal.y*240,-p.normal.x*240);c.stroke();c.restore();}
   for(let i=1;i<this.trail.length;i++){const a=this.trail[i-1],b=this.trail[i];c.save();c.globalAlpha=Math.min(1,b.life/.28);c.lineCap='round';c.shadowColor='#7dfde4';c.shadowBlur=12;c.strokeStyle='#81efd9';c.lineWidth=9;c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();c.shadowBlur=0;c.strokeStyle='#f6fff9';c.lineWidth=3;c.stroke();c.restore();}
   this.text(game.solved?`COMBO ×${game.combo} · CRYSTAL SLICED`:'Read carefully before you move.',615,322,15,'#d9d1ec','center');
- }
 };
+}

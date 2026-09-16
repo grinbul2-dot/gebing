@@ -19,6 +19,7 @@ function drawCertificate(canvas,player,logos){
  c.fillStyle='#d7e7f1';c.font='30px Arial';c.fillText('Things Around Me Explorer',800,389);
  c.fillStyle='#aac4d3';c.font='25px Arial';c.fillText('This certificate is for',800,463);
  c.fillStyle='#a8f2bd';let size=76;c.font=`bold ${size}px Quest, Arial`;while(c.measureText(player.name).width>1320&&size>24){size--;c.font=`bold ${size}px Quest, Arial`;}c.fillText(player.name,800,552);
+	 if(player.school){c.fillStyle='#aac4d3';c.font='25px Arial';c.fillText(player.school,800,582);}
  c.strokeStyle='#8db4b466';c.lineWidth=1;c.beginPath();c.moveTo(325,584);c.lineTo(1275,584);c.stroke();
  c.fillStyle='#e6f0f6';c.font='30px Arial';c.fillText('for completing all four areas of Word Crystal Quest.',800,643);
  c.fillStyle='#efc886';c.font='bold 35px Arial';c.fillText(`${award} · Average best score ${avg}%`,800,720);
